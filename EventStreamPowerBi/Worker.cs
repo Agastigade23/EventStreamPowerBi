@@ -27,7 +27,7 @@ namespace EventStreamPowerBi
         {
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             _timer = new Timer(ProduceChargeEvent, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(30));
+                TimeSpan.FromSeconds(10));
 
             return Task.CompletedTask;
         }
@@ -85,7 +85,7 @@ namespace EventStreamPowerBi
                     Console.WriteLine($"{DateTime.Now} > Exception: {exception.Message}");
                 }
 
-                await Task.Delay(30);
+                await Task.Delay(10);
 
             Console.WriteLine($"{numMessagesToSend} messages sent.");
         }
