@@ -13,12 +13,9 @@ namespace EventStreamPowerBi
     public class Events : IEvents
     {
         private static EventHubClient? eventHubClient;
-        private const string EventHubConnectionString = "Endpoint=sb://agasti-eventhubnamespace.servicebus.windows.net/;SharedAccessKeyName=Agasti-SAS-eventhubdemo;SharedAccessKey=cpDzPdaRboOY4LWNgJwjjGMB1JZtgZKL9Df3Fayj/CE=;EntityPath=agasti-eventhubdemo";
-        private const string EventHubName = "agasti-eventhubdemo";
         private static int i = 0;
-        public void ProduceChargeEvent()
+        public void ProduceChargeEvent(string EventHubConnectionString, string EventHubName)
         {
-            
             var connectionStringBuilder = new EventHubsConnectionStringBuilder(EventHubConnectionString)
             {
                 EntityPath = EventHubName
@@ -39,7 +36,7 @@ namespace EventStreamPowerBi
         {
             try
             {
-                _ = StartSendMessage(numMessagesToSend);
+                //_ = StartSendMessage(numMessagesToSend);
                 _ = UpdateSendMessage(numMessagesToSend);
             }
             catch (Exception exception)
@@ -68,8 +65,8 @@ namespace EventStreamPowerBi
             {
                 var StartEventsobj = new StartEvent
                 {
-                    Event = "Start",
-                    FeedEventName = "a",
+                    Event = "Start - "+ numMessagesToSend ,
+                    FeedEventName = "A",
                     stationID = "123",
                     SessionID = Guid.NewGuid().ToString()
                 };
@@ -92,12 +89,13 @@ namespace EventStreamPowerBi
         private static async Task UpdateSendMessage(int numMessagesToSend, EventHubClient eventHubClient)
         {
             Random rnd = new();
-            int randomnumber = rnd.Next(1, 5);
+            int randomnumber = rnd.Next(1, 50);
             try
             {
                 var UpdateEventsobj = new UpdateEvent
                 {
-                    Event = "Update",
+                    EventId= numMessagesToSend,
+                    Event = "Update - " + numMessagesToSend,
                     FeedEventName = "A",
                     stationTime = DateTime.UtcNow.ToString(),
                     SessionID = Guid.NewGuid().ToString(),

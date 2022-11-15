@@ -8,6 +8,7 @@ namespace EventStreamPowerBi.Models
 {
     public class ModelEvents
     {
+        public int? EventId { get; set; }
         public string? Event { get; set; }
         public string? FeedEventName { get; set; }
         public string? SessionID { get; set; }

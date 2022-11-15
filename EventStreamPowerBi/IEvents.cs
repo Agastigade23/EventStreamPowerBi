@@ -8,6 +8,6 @@ namespace EventStreamPowerBi
 {
     public interface IEvents
     {
-        void ProduceChargeEvent();
+        void ProduceChargeEvent(string EventHubConnectionString, string EventHubName);
     }
 }

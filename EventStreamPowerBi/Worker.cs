@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.Amqp.Framing;
+using Microsoft.Extensions.Configuration;
 
 namespace EventStreamPowerBi
 {
@@ -10,11 +11,13 @@ namespace EventStreamPowerBi
         private readonly ILogger<Worker> _logger;
         private Timer? _timer = null;
         private readonly IEvents _producer;
-        
-        public Worker(ILogger<Worker> logger, IEvents producer)
+        private IConfiguration Configuration;
+
+        public Worker(ILogger<Worker> logger, IEvents producer, IConfiguration _configuration)
         {
             _logger = logger;
             _producer = producer;
+            Configuration = _configuration;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,7 +36,9 @@ namespace EventStreamPowerBi
 
         public void ProduceChargeEvent(object? state)
         {
-            _producer.ProduceChargeEvent();
+            string EventHubConnectionString = this.Configuration.GetSection("ConnectionStrings")["EventHubConfigConnectionString"];
+            string EventHubName = this.Configuration.GetSection("ConnectionStrings")["EventHubName"];
+            _producer.ProduceChargeEvent(EventHubConnectionString, EventHubName);
         }
 
 
